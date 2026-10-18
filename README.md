@@ -45,3 +45,4 @@ In Razorpay, switch to Test Mode and generate API keys. Use the Key ID and Key S
 ## Cloudinary
 
 For local image uploads, copy `.env.example` to `.env` and set your Cloudinary credentials there. Django loads `.env` locally, and `.env` is ignored by Git. In production, set the same variables in your hosting provider's private environment settings. Rotate any Cloudinary API secret that was previously stored in `.env.production`.# OudMistiquev2
+# OudMistiquev2
