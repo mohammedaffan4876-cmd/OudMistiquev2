@@ -1,0 +1,16 @@
+Django==6.0.5
+django-cors-headers==4.9.0
+django-filter==25.2
+python-dotenv>=1.0,<2
+djangorestframework==3.17.1
+djangorestframework-simplejwt==5.5.1
+razorpay>=1.4,<2
+setuptools<81
+Pillow==12.2.0
+gunicorn==26.0.0
+whitenoise==6.12.0
+psycopg2-binary==2.9.12
+PyJWT==2.13.0
+dj-database-url==2.1.0
+cloudinary==1.41.0
+django-cloudinary-storage==0.3.0
