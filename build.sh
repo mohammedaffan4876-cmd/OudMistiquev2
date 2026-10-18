@@ -8,7 +8,7 @@ export DJANGO_SETTINGS_MODULE=config.settings
 
 # Install Python dependencies first
 echo "Installing Python dependencies..."
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 
 # Install Node.js dependencies and build React
 echo "Building React frontend..."
@@ -25,6 +25,6 @@ echo "Collecting static files..."
 python -m django collectstatic --settings=config.settings --noinput
 
 echo "Applying database migrations..."
-python manage.py migrate --noinput
+echo "Leaving migrations to the configured Render start command."
 
 echo "Build completed successfully!"
