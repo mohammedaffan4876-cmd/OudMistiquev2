@@ -42,6 +42,9 @@ if not SECRET_KEY:
     SECRET_KEY = 'django-insecure-local-development-only'
 
 ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS', '').split(',') if host.strip()]
+for host in ('oudmistique.in', 'www.oudmistique.in', 'oudmistiquev2-1.onrender.com'):
+    if host not in ALLOWED_HOSTS:
+        ALLOWED_HOSTS.append(host)
 render_hostname = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if render_hostname and render_hostname not in ALLOWED_HOSTS:
     ALLOWED_HOSTS.append(render_hostname)
