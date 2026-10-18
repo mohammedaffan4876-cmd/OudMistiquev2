@@ -22,7 +22,7 @@ cp dist/index.html templates/index.html
 
 # Collect Django static files
 echo "Collecting static files..."
-python manage.py shell -c "from django.core.management import get_commands; print('collectstatic:', get_commands().get('collectstatic'))"
+python manage.py collectstatic --noinput
 
 echo "Applying database migrations..."
 echo "Leaving migrations to the configured Render start command."
