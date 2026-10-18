@@ -2,6 +2,10 @@
 #!/usr/bin/env bash
 set -o errexit
 
+# Render may invoke this script from a different working directory.
+cd "$(dirname "$0")"
+export DJANGO_SETTINGS_MODULE=config.settings
+
 # Install Python dependencies first
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
