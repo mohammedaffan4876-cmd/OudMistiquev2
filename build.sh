@@ -22,7 +22,7 @@ cp dist/index.html templates/index.html
 
 # Collect Django static files
 echo "Collecting static files..."
-python manage.py collectstatic --noinput
+python -m django collectstatic --settings=config.settings --noinput
 
 echo "Applying database migrations..."
 echo "Leaving migrations to the configured Render start command."
