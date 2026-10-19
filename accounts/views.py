@@ -1,34 +1,54 @@
-from django.contrib.auth import authenticate
+import logging
+
+from django.contrib.auth import authenticate, password_validation
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.db import IntegrityError
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 
+logger = logging.getLogger(__name__)
+
 class RegisterView(APIView):
     permission_classes = []
 
     def post(self, request):
-        email = request.data.get('email')
+        email = (request.data.get('email') or '').strip().lower()
         password = request.data.get('password')
-        first_name = request.data.get('first_name', '')
-        last_name = request.data.get('last_name', '')
+        first_name = (request.data.get('first_name') or '').strip()
+        last_name = (request.data.get('last_name') or '').strip()
 
         if not email or not password:
             return Response({"error": "Email and password are required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            validate_email(email)
+            password_validation.validate_password(password)
+        except ValidationError as error:
+            return Response({"error": error.messages}, status=status.HTTP_400_BAD_REQUEST)
 
         if User.objects.filter(username=email).exists():
             return Response({"error": "User with this email already exists"}, status=status.HTTP_400_BAD_REQUEST)
 
         # Create user with username = email
-        user = User.objects.create_user(
-            username=email,
-            email=email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name
-        )
+        try:
+            user = User.objects.create_user(
+                username=email,
+                email=email,
+                password=password,
+                first_name=first_name,
+                last_name=last_name
+            )
+        except IntegrityError:
+            logger.info("Registration rejected for an existing account")
+            return Response({"error": "User with this email already exists"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            logger.exception("Unexpected registration failure")
+            return Response({"error": "Unable to create account"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({
             "message": "User registered successfully",
             "user": {
@@ -43,7 +63,7 @@ class LoginView(APIView):
     permission_classes = []
 
     def post(self, request):
-        email = request.data.get('email')
+        email = (request.data.get('email') or '').strip().lower()
         password = request.data.get('password')
 
         if not email or not password:

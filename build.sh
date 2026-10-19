@@ -46,6 +46,6 @@ test -n "$(find staticfiles/assets -maxdepth 1 -type f -name '*.css' -size +0c -
 }
 
 echo "Applying database migrations..."
-echo "Leaving migrations to the configured Render start command."
+echo "Migrations run from the Render start command before Gunicorn starts."
 
 echo "Build completed successfully!"
