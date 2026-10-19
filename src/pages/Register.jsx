@@ -27,7 +27,8 @@ export const Register = () => {
       toast.success('Registration successful! Please login.')
       navigate('/login')
     } catch (error) {
-      toast.error('Registration failed')
+      const detail = error.response?.data?.error
+      toast.error(Array.isArray(detail) ? detail[0] : detail || 'Registration failed')
     } finally {
       setLoading(false)
     }
